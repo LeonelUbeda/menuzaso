@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+
+{% block content %}
+    <div class="w-full flex flex-col items-center">
+        {% for block in page.content %}
+            {% include_block block %}
+        {% endfor %}
+    </div>
+    
+{% endblock %}

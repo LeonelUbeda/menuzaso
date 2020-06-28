@@ -72,7 +72,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
+            os.path.join(PROJECT_DIR, '../templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -173,4 +173,4 @@ AUTH_USER_MODEL = 'user.User'
 
 WAGTAIL_USER_EDIT_FORM = 'user.admin.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'user.admin.CustomUserCreationForm'
-WAGTAIL_USER_CUSTOM_FIELDS = ['restaurant']
+WAGTAIL_USER_CUSTOM_FIELDS = ['description']

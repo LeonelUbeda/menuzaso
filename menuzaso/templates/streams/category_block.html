@@ -1,0 +1,21 @@
+
+{% load wagtailimages_tags %}
+<h1>{{self.title}}</h1>
+{% image self.background fill-1000x150-c100 as category_background%}
+
+<div class="relative flex flex-col items-center justify-center category-title-block">
+    <img src="{{category_background.url}}" class="w-100 h-100" alt="">
+    <h2 class="text-3xl absolute text-white font-bold">{{self.title}}</h2>
+</div>
+
+
+{% for dish in self.dishes %}
+    <div class="category-dish flex no-wrap shadow-xl items-center px-5 py-3 rounded-md">
+        {% image dish.image fill-128x128-c100 as dish_image%}
+        <img src="{{dish_image.url}}" class="flex-none rounded-lg" alt="">
+        <div class="h-full pt-3 px-2">
+            <h3 class="text-xl font-semibold">{{dish.title}}</h3>
+            <p>{{dish.description}}</p>
+        </div>
+    </div>
+{% endfor %}
