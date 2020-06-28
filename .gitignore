@@ -1,0 +1,6 @@
+.vscode
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+menuzaso/media/
