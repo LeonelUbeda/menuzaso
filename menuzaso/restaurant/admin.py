@@ -17,6 +17,6 @@ class RestaurantAdmin(ModelAdmin):
     exclude_from_explore = False
     list_display = ('name', 'id',)
     search_fields = ('name',)
-
+    
 
 modeladmin_register(RestaurantAdmin)
