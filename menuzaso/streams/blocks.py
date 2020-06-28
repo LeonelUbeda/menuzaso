@@ -22,7 +22,9 @@ class CategoryBlock(blocks.StructBlock):
                             ("name", blocks.CharBlock(required=True)),
                             ("quantity", blocks.CharBlock(required=True)),
                             ("price", blocks.FloatBlock(required=True)),
-                            ("currency", blocks.ChoiceBlock(choices=[("C$", "Cordoba Nicaraguense"), ("$", "Dolar estadounidense")], required=True))
+                            ("currency", blocks.ChoiceBlock(choices=[
+                                ("C$", "Cordoba Nicaraguense"), ("$", "Dolar estadounidense")
+                                ], required=True))
                         ]
                     )
                 ))
