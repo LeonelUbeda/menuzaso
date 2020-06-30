@@ -6,4 +6,7 @@ from wagtail.core.models import Page
 class HomePage(Page):
     templates = 'templates/home/home_page.html'
     max_count = 1
+    parent_page_type = [
+        'wagtailcore.page'
+    ]
 

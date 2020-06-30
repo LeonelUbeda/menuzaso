@@ -1,0 +1,6 @@
+.ingredients-list div{
+    width: 200px;
+}
+.ingredients-list{
+    border: red 1px solid;
+}

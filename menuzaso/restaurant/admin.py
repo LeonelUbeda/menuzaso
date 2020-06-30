@@ -8,15 +8,3 @@ from .models import Restaurant
 
 
 
-class RestaurantAdmin(ModelAdmin):
-    model = Restaurant
-    menu_label = 'Restaurants'
-    menu_icon = 'Placeholder'
-    menu_order = 200
-    add_to_settings_menu = False
-    exclude_from_explore = False
-    list_display = ('name', 'id',)
-    search_fields = ('name',)
-    
-
-modeladmin_register(RestaurantAdmin)
