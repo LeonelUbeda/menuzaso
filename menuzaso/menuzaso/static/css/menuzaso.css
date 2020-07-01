@@ -17,9 +17,6 @@ body{
     background-color: #edf2f7;
 }
 
-.ingredients-list div{
-    width: 200px;
-}
 .category-dish-container{
     width: 100%;
     max-width: 1050px;
@@ -70,10 +67,10 @@ body{
         font-size: 30px;
     }
     .category-dish{
-        flex-direction: column;
         height: auto;
         margin: 0;
-        max-width: 80%;
+        max-width: 95%;
+        margin-top: 20px !important;
     }
     .category-dish-container{
         padding: 0 10px !important
@@ -85,14 +82,40 @@ body{
 
     .category-dish img{
         object-fit: cover;
-        width: 90%;
-        height: 140px;
+        width: 100px;
+        height: 100px;
     }
 }
 
 @media screen and (max-width: 375px) {
     .category-dish{
-
-        max-width: 90%;
+        align-items: flex-start !important;
+        width: 95%;
+        padding: 10px 10px !important;
+        line-height: 1.3;
     }
+    .category-dish .ingredients {
+        font-size: 14px;
+    }
+    .category-dish > div{
+        padding-top: 0 !important;
+    }
+    .category-dish img{
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+    }
+    .category-dish .title{
+        font-size: 15px;
+    }
+    
+    .category-dish .description{
+        font-size: 13px;
+    }
+    .category-dish .price{
+        color: #194D00;
+        right: 10px;
+        bottom: 5px;
+    }
+
 }
