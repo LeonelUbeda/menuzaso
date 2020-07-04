@@ -7,14 +7,16 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import (
     InlinePanel,
     FieldPanel,
-    StreamFieldPanel
+    StreamFieldPanel,
+    TabbedInterface,
+    ObjectList
 )
 from wagtail.admin.forms import WagtailAdminModelForm
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     modeladmin_register,
 )
-from .models import Restaurant, RestaurantPage
+from .models import Restaurant, RestaurantPage, Dish
 # Register your models here.
 
 
@@ -49,31 +51,54 @@ class RestaurantAdmin(ModelAdmin):
         FieldPanel('staff', widget=forms.CheckboxSelectMultiple)
     ]
 
-"""
+from django.forms.widgets import HiddenInput
+from wagtail.contrib.modeladmin.views import CreateView
+
+
+
+
+class DishAdminView(CreateView):
+    def get_form(self):
+        form = super().get_form()
+        # form.fields['managed_by'].widget = HiddenInput()
+        form.instance.managed_by = self.request.user
+        return form
+    
+    # def form_valid(self, form):
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # kwargs['initial']['managed_by'] = self.request.user  # Add the data so the form validates properly.
+        
+        print(kwargs)
+        return kwargs
+
 class DishAdmin(ModelAdmin):
+    create_view_class = DishAdminView
     model = Dish
     menu_label = 'Dishes'
     menu_icon = 'Placeholder'
     menu_order = 300
     add_to_settings_menu = False
     exclude_from_explore = False
-    list_display = ('name', 'id',)
-    search_fields = ('name')
+    list_display = ('name', 'id', 'price', 'image')
+    list_filter = ('name', 'price')
+    search_fields = ('name',)
     panels = [
         FieldPanel('name', classname="full title"),
         ImageChooserPanel('image'),
         FieldPanel('price'),
         FieldPanel('currency'),
-        StreamFieldPanel('ingredients')
+        FieldPanel('ingredients')
     ]
 
-    def clean(holap):
-        print('CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALI')
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         # Only show people managed by the current user
-        return qs
-"""
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(managed_by=request.user)
+    
 
 @hooks.register('construct_image_chooser_queryset')
 def show_my_uploaded_image_only(images, request):
@@ -112,3 +137,4 @@ def global_admin_css():
     return format_html('<link rel="stylesheet" href="{}">', static("css/custom.css"))
 
 modeladmin_register(RestaurantAdmin)
+modeladmin_register(DishAdmin)

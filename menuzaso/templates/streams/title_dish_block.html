@@ -1,18 +1,15 @@
 
 {% load wagtailimages_tags %}
 {% load static %}
-{% image self.background fill-1200x400-c100 as category_background%}
 
-{% if self.dishes %}
-<div class="relative flex flex-col items-center justify-center category-title-block">
-    <img src="{{category_background.url}}" class="object-cover">
-    <h2 class="text-3xl absolute text-white font-bold">{{self.title}}</h2>
+{% if self.items %}
+<div class="relative flex flex-col items-center text-center justify-center title-prom">
+    <h2 class="font-bold">{{self.title}}</h2>
 </div>
-
 {% endif %}
 
-<div class="flex dish-container flex-wrap justify-around flex-start px-10">
-    {% for dish in self.dishes %}
+<div class="flex dish-container flex-wrap justify-around flex-start px-10 mb-20">
+    {% for dish in self.items %}
         <div class="dish shadow-md px-5 py-3 relative mt-10 ">
             <div class="flex no-wrap items-start">
                 <img src="{% static "img/arrow-icon.svg" %}" class="arrow absolute mobile-425" alt="">
@@ -31,4 +28,3 @@
         </div>
     {% endfor %}
 </div>
-

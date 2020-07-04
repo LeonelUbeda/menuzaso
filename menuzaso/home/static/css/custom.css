@@ -4,3 +4,25 @@
 .ingredients-list{
     border: red 1px solid;
 }
+
+
+
+/* CUSTOM TAB */
+.tab-nav{
+    display: flex;
+    overflow-x: auto;
+    /* border: 1px red solid; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.content{
+    padding-bottom: 100px;
+    /* border: 1px red solid; */
+}
+
+.tab-nav li a{
+    white-space: nowrap;
+    padding-left: 20px;
+    padding-right: 20px;
+}

@@ -1,0 +1,8 @@
+
+{% load wagtailimages_tags %}
+
+{% image self.logo max-400x400 as logo %}
+
+<div class="w-full flex justify-center logo-block" style="margin: {% firstof self.vertical_margin '30'%}px 0">
+    <img src="{{logo.url}}" class="object-cover">
+</div>

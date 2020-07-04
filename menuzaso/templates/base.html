@@ -16,22 +16,21 @@
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/menuzaso.css' %}">
-        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <link href="{% static 'vendor/css/tailwind.css' %}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'dist/menuzaso-dist.css' %}">
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
     </head>
-
     <body class="{% block body_class %}{% endblock %}">
+        <script type="text/javascript" src="{% static 'vendor/js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'dist/menuzaso-dist.js' %}"></script>
         {% wagtailuserbar %}
 
         {% block content %}{% endblock %}
 
         {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/menuzaso.js' %}"></script>
 
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}

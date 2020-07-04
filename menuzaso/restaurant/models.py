@@ -3,11 +3,25 @@ from wagtail.core.models import Page
 from wagtail.core import blocks as wagtailBlocks
 from django.core.exceptions import ValidationError
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, StreamFieldPanel, InlinePanel
+from django.conf import settings
+from wagtail.admin.edit_handlers import (
+    FieldPanel, 
+    StreamFieldPanel, 
+    MultiFieldPanel, 
+    StreamFieldPanel, 
+    InlinePanel, 
+    ObjectList, 
+    TabbedInterface,
+)
+
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.core.models import Orderable
+from modelcluster.fields import ParentalKey
 from streams import blocks
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from user.models import User
+from wagtail.snippets.models import register_snippet
 # Create your models here.
 
 
@@ -56,13 +70,7 @@ class RestaurantsPage(Page):
     template = 'restaurant/restaurants_page.html'
     max_count = 1
     
-    content = StreamField(
-        [
-            ("ritch_block", blocks.RichTextBlock())
-        ],
-        null=True,
-        blank=True
-    )
+    content = StreamField([],null=True,blank=True)
     content_panels = Page.content_panels + [
         StreamFieldPanel("content")
     ]
@@ -71,51 +79,18 @@ class RestaurantsPage(Page):
 
 
 
-class RestaurantPage(Page):
-    template = 'restaurant/restaurant_page.html'
-    content = StreamField(
-        [
-            ("category_block", blocks.CategoryBlock()),
-            ("ritch_block", blocks.RichTextBlock())
-        ],
-        null=True,
-        blank=True,
-    )
-    subpage_types = []
-    parent_page_types = ['restaurant.RestaurantsPage']
-    restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL, blank=True)
-    is_creatable = False
-    promote_panels = [
-        MultiFieldPanel([
-            # Disable slug
-            #FieldPanel('slug'),
-            FieldPanel('seo_title'),
-            #FieldPanel('show_in_menus'),
-            FieldPanel('search_description'),
-        ], _('Common page configuration')),
-    ]
+class RestaurantPhones(Orderable):
+    page = ParentalKey("restaurant.RestaurantPage", related_name="restaurant_phone")
+    phone = models.CharField(max_length=15, blank=True, null=False)
+    panels = [FieldPanel("phone")]
 
-    content_panels = promote_panels + [
 
-            FieldPanel('title', classname="full title"),
-            StreamFieldPanel("content", classname="restaurant-fields")
-       
-    ]
-
-    parent_page_types = ['RestaurantsPage']
-
+class DishOrderable(Orderable):
+    """ Para seleccionar los platillos del snippet Dish """
     
 
-    class Meta:
-        verbose_name = "Restaurante"
-        verbose_name_plural = "Restaurantes"
-
-"""
-class Category(models.Model):
-    name = models.CharField(max_length=60, blank=False, null=True)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-
 class Dish(models.Model):
+    managed_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True, blank=True,
@@ -132,9 +107,92 @@ class Dish(models.Model):
         (NIO, 'Cordobas')
     ]
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default=NIO)
-    ingredients = StreamField([('ingredientes', wagtailBlocks.ListBlock(blocks.IngredientsStructBlock))])
+    ingredients = models.CharField(max_length=100, blank=True, null=True)
+    # ingredients = StreamField([('ingredientes', wagtailBlocks.ListBlock(blocks.IngredientsStructBlock))])
 
-"""
+    panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("name"),
+                ImageChooserPanel("image"),
+                FieldPanel("currency"),
+                FieldPanel("ingredients"),
+                FieldPanel("price")
+            ],
+            heading="Dish"
+        )
+    ]
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Dish"
+        verbose_name_plural = "Dishes"
+
+# register_snippet(Dish)
+
+
+class RestaurantPage(Page):
+    template = 'restaurant/restaurant_page.html'
+    content = StreamField(
+        [
+            ("category_block", blocks.CategoryBlock()),
+            ("logo_block", blocks.LogoBlock()),
+            ("title_dish_block", blocks.TitleDish())
+        ],
+        null=True,
+        blank=True,
+    )
+
+    address = models.CharField(max_length=100, null=True, blank=True)
+    restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL, blank=True)
+
+    subpage_types = []
+    parent_page_types = ['restaurant.RestaurantsPage']
+
+    is_creatable = False
+    
+    promote_panels = [
+        MultiFieldPanel([
+            # Disable slug
+            #FieldPanel('slug'),
+            FieldPanel('seo_title'),
+            #FieldPanel('show_in_menus'),
+            FieldPanel('search_description'),
+        ], _('Common page configuration')),
+    ]
+
+    details_panels = [
+        MultiFieldPanel([
+            FieldPanel('address'),
+            InlinePanel("restaurant_phone", max_num=5, min_num=1, label="Phones")
+        ], _('Details'))
+    ]
+    content_panels = [
+            FieldPanel('title', classname="full title"),
+            StreamFieldPanel("content", classname="restaurant-fields")
+       
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading='Content'),
+            ObjectList(promote_panels, heading='Promotional stuff'),
+            ObjectList(details_panels, heading='Contacto'), 
+
+        ]
+    )
+    parent_page_types = ['RestaurantsPage']
+
+    class Meta:
+        verbose_name = "Restaurante"
+        verbose_name_plural = "Restaurantes"
+
+
+
+
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 @receiver(post_save, sender=Restaurant)
