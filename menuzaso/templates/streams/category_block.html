@@ -12,23 +12,25 @@
 {% endif %}
 
 <div class="flex dish-container flex-wrap justify-around flex-start px-10">
-    {% for dish in self.dishes %}
-        <div class="dish shadow-md px-5 py-3 relative mt-10 ">
-            <div class="flex no-wrap items-start">
-                <img src="{% static "img/arrow-icon.svg" %}" class="arrow absolute mobile-425" alt="">
-                {% image dish.image fill-256x256-c100 as dish_image%}
-                <img src="{{dish_image.url}}" class="flex-none rounded-lg image" alt="">
-                <div class="h-full pt-1 px-2">
-                    <h3 class="font-semibold title">{{dish.title}}</h3>
-                    <p class="description">{{dish.description}}</p>
-                    <span class="font-semibold ingredients">{{dish.ingredients}}</span>
-                    <div>
-                        <span class="absolute price font-bold">{{dish.currency}}{{dish.price}}</span>
+    {% for dish in self.dishes%}
+        {% with dish=dish.snipet %}
+            <div class="dish shadow-md px-5 py-3 relative mt-10 ">
+                <div class="flex no-wrap items-start">
+                    <img src="{% static "img/arrow-icon.svg" %}" class="arrow absolute mobile-425" alt="">
+                    {% image dish.image fill-256x256-c100 as dish_image%}
+                    <img src="{{dish_image.url}}" class="flex-none rounded-lg image" alt="">
+                    <div class="h-full pt-1 px-2">
+                        <h3 class="font-semibold title">{{dish.title}}</h3>
+                        <p class="description">{{dish.description}}</p>
+                        <span class="font-semibold ingredients">{{dish.ingredients}}</span>
+                        <div>
+                            <span class="absolute price font-bold">{{dish.currency}}{{dish.price}}</span>
+                        </div>
                     </div>
                 </div>
+                <p class="font-semibold ingredients mobile-425 d-none my-4">{{dish.ingredients}}</p>
             </div>
-            <p class="font-semibold ingredients mobile-425 d-none my-4">{{dish.ingredients}}</p>
-        </div>
+        {% endwith %}
     {% endfor %}
 </div>
 

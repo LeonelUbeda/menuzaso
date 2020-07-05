@@ -4,6 +4,7 @@ from wagtail.core import blocks as wagtailBlocks
 from django.core.exceptions import ValidationError
 from wagtail.core.fields import RichTextField, StreamField
 from django.conf import settings
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.admin.edit_handlers import (
     FieldPanel, 
     StreamFieldPanel, 
@@ -87,7 +88,12 @@ class RestaurantPhones(Orderable):
 
 class DishOrderable(Orderable):
     """ Para seleccionar los platillos del snippet Dish """
-    
+    page = ParentalKey("restaurant.RestaurantPage", related_name="restaurant_dish")
+    dish = models.ForeignKey("restaurant.Dish", on_delete=models.CASCADE)
+
+    panels = [
+        SnippetChooserPanel("dish")
+    ]
 
 class Dish(models.Model):
     managed_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
@@ -130,7 +136,7 @@ class Dish(models.Model):
         verbose_name = "Dish"
         verbose_name_plural = "Dishes"
 
-# register_snippet(Dish)
+register_snippet(Dish)
 
 
 class RestaurantPage(Page):

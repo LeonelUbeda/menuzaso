@@ -19,23 +19,6 @@ from wagtail.contrib.modeladmin.options import (
 from .models import Restaurant, RestaurantPage, Dish
 # Register your models here.
 
-
-
-"""
-class RestaurantPageform(ModelAdmin):
-    model = RestaurantPage
-    menu_label = 'Restaurantes paginas'
-    menu_icon = 'Placeholder'
-    menu_order = 200
-    def save():
-        print('NEOP')
-    
-    def save_model(self, request, obj, form, change):
-        print('HOLAAAAAAAAAAAAAAAA')
-"""
-
-
-
 class RestaurantAdmin(ModelAdmin):
     model = Restaurant
     menu_label = 'Restaurants'

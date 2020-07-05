@@ -1,7 +1,8 @@
 """ Streamfields """
 from wagtail.core import blocks
+from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
-
+# from restaurant.models import Dish
 
 class IngredientsStructBlock(blocks.StructBlock):
     name = blocks.CharBlock(required=True)
@@ -12,14 +13,8 @@ class IngredientsStructBlock(blocks.StructBlock):
 
 
 class DishesStructBlock(blocks.StructBlock):
-    image = ImageChooserBlock(required=False)
-    title = blocks.CharBlock(required=True, max_length=50)
-    description = blocks.CharBlock(required=False, max_length=100)
-    price = blocks.FloatBlock(required=True)
-    currency = blocks.ChoiceBlock(choices=[
-        ("C$", "Cordoba Nicaraguense"), ("$", "Dolar estadounidense")
-    ], required=True)
-    ingredients = blocks.CharBlock(required=False, max_length=100)
+    snipet = SnippetChooserBlock("restaurant.Dish")
+
     class Meta:
         icon = "folder"
 
