@@ -90,7 +90,8 @@
         },
         "draftjs-exporter": {
             "hashes": [
-                "sha256:5839cbc29d7bce2fb99837a404ca40c3a07313f2a20e2700de7ad6aa9a9a18fb"
+                "sha256:5839cbc29d7bce2fb99837a404ca40c3a07313f2a20e2700de7ad6aa9a9a18fb",
+                "sha256:d415a9964690a2cddb66a31ef32dd46c277e9b80434b94e39e3043188ed83e33"
             ],
             "version": "==2.1.7"
         },
@@ -196,11 +197,11 @@
         },
         "wagtail": {
             "hashes": [
-                "sha256:737dbd23f8656061f7fb7ef338a9a0bac1f1912bbba53e471647865758e9de86",
-                "sha256:a8e89447b78dc7bfdcf6fddd8615f9c9625b104cc4a9f754fe3f5ed5998317b3"
+                "sha256:17169ea7c6a2cf2dc8f945f0a967424d7932843087df4897c813868d7f9cddc0",
+                "sha256:7dba2e5cebee2bb39e4c3db703eeb428b6ba323d72e5fbf384f1ce81f65f7e42"
             ],
             "index": "pypi",
-            "version": "==2.9.1"
+            "version": "==2.9.3"
         },
         "wagtailuiplus": {
             "hashes": [
